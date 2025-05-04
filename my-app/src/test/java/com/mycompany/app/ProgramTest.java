@@ -147,25 +147,74 @@ public class ProgramTest {
     }
     
     @Test
-    public void testGenerateMoves() {
-        ArrayList<Integer> moves = new ArrayList<>();
-        game.generateMoves(game.board, moves);
-        assertEquals(9, moves.size());
-        
+    public void testEvaluateDraw() {
         char[] board = {
-            'X', ' ', 'O',
-            ' ', 'X', ' ',
-            'O', ' ', 'X'
+            'X', 'O', 'X',
+            'X', 'X', 'O',
+            'O', 'X', 'O'
         };
-        ArrayList<Integer> partialMoves = new ArrayList<>();
-        game.generateMoves(board, partialMoves);
-        assertEquals(4, partialMoves.size());
-        assertTrue(partialMoves.contains(1));
-        assertTrue(partialMoves.contains(3));
-        assertTrue(partialMoves.contains(5));
-        assertTrue(partialMoves.contains(7));
+        assertEquals(0, game.evaluatePosition(board, game.player1));
+        assertEquals(0, game.evaluatePosition(board, game.player2));
     }
-    
+
+    @Test
+    public void testCheckStateDraw() {
+        char[] board = {
+            'X', 'O', 'X',
+            'X', 'X', 'O',
+            'O', 'X', 'O'
+        };
+        assertEquals(State.DRAW, game.checkState(board));
+    }
+
+    @Test
+    public void testGenerateMoves2() {
+        char[] board = {
+            'X', 'O', ' ',
+            ' ', 'X', 'O',
+            ' ', ' ', ' '
+        };
+        ArrayList<Integer> moves = new ArrayList<>();
+        game.generateMoves(board, moves);
+        assertEquals(5, moves.size());
+        assertTrue(moves.contains(2));
+        assertTrue(moves.contains(3));
+        assertTrue(moves.contains(6));
+        assertTrue(moves.contains(7));
+        assertTrue(moves.contains(8));
+    }
+
+    @Test
+    public void testMiniMaxForWinningMove() {
+        char[] board = {
+            'X', 'O', 'X',
+            'O', ' ', ' ',
+            ' ', ' ', ' '
+        };
+        int move = game.MiniMax(board, game.player2);
+        assertEquals(5, move);
+    }
+
+    @Test
+    public void testMinMove() {
+        char[] board = {
+            'X', 'O', 'X',
+            'O', ' ', ' ',
+            ' ', ' ', ' '
+        };
+        assertEquals(-Game.INF, game.MinMove(board, game.player1));
+    }
+
+    @Test
+    public void testMaxMove() {
+        char[] board = {
+            'X', 'O', 'X',
+            'O', ' ', ' ',
+            ' ', ' ', ' '
+        };
+        assertEquals(Game.INF, game.MaxMove(board, game.player2));
+    }
+
     @Test
     public void testEvaluatePosition() {
         Player xPlayer = new Player();
@@ -229,7 +278,7 @@ public class ProgramTest {
     }
     
     @Test
-    public void testMinMove() {
+    public void testMinMove2() {
         Player xPlayer = game.player1;
         xPlayer.symbol = 'X';
         
@@ -246,7 +295,7 @@ public class ProgramTest {
     }
     
     @Test
-    public void testMaxMove() {
+    public void testMaxMove2() {
         Player oPlayer = game.player2;
         oPlayer.symbol = 'O';
         
@@ -280,21 +329,6 @@ public class ProgramTest {
         TicTacToePanel panel = new TicTacToePanel(new GridLayout(3, 3));
         assertNotNull(panel);
         assertEquals(9, panel.getComponentCount());
-    }
-    
-    @Test
-    public void testUtilityPrintMethods() {
-        char[] charBoard = {'X', 'O', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
-        Utility.print(charBoard);
-        
-        int[] intBoard = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        Utility.print(intBoard);
-        
-        ArrayList<Integer> moves = new ArrayList<>();
-        moves.add(0);
-        moves.add(4);
-        moves.add(8);
-        Utility.print(moves);
     }
     
     @Test
