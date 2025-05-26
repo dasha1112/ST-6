@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 
-public class AppTest {
+public class ProgramTest {
 
     private Game game;
     private Player playerX, playerO;
